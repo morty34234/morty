@@ -1,0 +1,48 @@
+{% extends 'events/base.html' %}
+
+{% block title %}Добавить мероприятие - Афиша{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>{{ page_title }}</h1>
+</div>
+
+<div style="max-width: 600px; margin: 0 auto;">
+    <div class="event-detail">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {% for field in form %}
+            <div class="form-group">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                <div style="color: #ff6b6b; font-size: 0.9rem; margin-top: 0.5rem;">
+                    {{ field.errors }}
+                </div>
+                {% endif %}
+                {% if field.help_text %}
+                <div style="color: #666; font-size: 0.8rem; margin-top: 0.5rem;">
+                    {{ field.help_text }}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+
+            <button type="submit" class="btn" style="width: 100%; margin-top: 1.5rem;">
+                Добавить мероприятие
+            </button>
+        </form>
+
+        <div style="margin-top: 2rem; padding: 1rem; background: #f8f9fa; border-radius: 4px;">
+            <h4>Перед добавлением проверьте:</h4>
+            <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                <li>Все обязательные поля заполнены</li>
+                <li>Дата мероприятия в будущем</li>
+                <li>Изображение соответствует мероприятию</li>
+                <li>Цена указана корректно</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

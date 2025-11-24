@@ -1,0 +1,36 @@
+{% extends 'events/base.html' %}
+
+{% block title %}{{ event.title }} - Афиша{% endblock %}
+
+{% block content %}
+<div class="event-detail">
+    {% if is_past %}
+    <div class="past-event-badge">
+        ⏳ Это мероприятие уже прошло
+    </div>
+    {% endif %}
+
+    {% if event.image %}
+    <img src="{{ event.image.url }}" alt="{{ event.title }}" class="event-detail-image">
+    {% endif %}
+
+    <span class="event-type">{{ event.get_event_type_display }}</span>
+
+    <h1>{{ event.title }}</h1>
+
+    <div style="margin: 1.5rem 0; font-size: 1.1rem;">
+        <p><strong>📅 Дата и время:</strong> {{ event.date|date:"d.m.Y H:i" }}</p>
+        <p><strong>📍 Место:</strong> {{ event.location }}</p>
+        <p><strong>💰 Стоимость:</strong> {% if event.price > 0 %}{{ event.price }} руб.{% else %}Бесплатно{% endif %}</p>
+    </div>
+
+    <div style="margin: 2rem 0;">
+        <h3>Описание мероприятия</h3>
+        <p style="margin-top: 0.5rem; line-height: 1.8;">{{ event.description|linebreaks }}</p>
+    </div>
+
+    <a href="{% if is_past %}{% url 'past_events' %}{% else %}{% url 'index' %}{% endif %}" class="btn">
+        ← Назад к списку
+    </a>
+</div>
+{% endblock %}
