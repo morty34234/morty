@@ -1,0 +1,29 @@
+<!-- В списке комментариев пользователя -->
+{% extends 'events/base.html' %}
+
+{% block title %}Профиль - {{ user.username }}{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <h1>Ваш профиль</h1>
+
+    <div class="profile-info">
+        <p><strong>Имя пользователя:</strong> {{ user.username }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Дата регистрации:</strong> {{ user.date_joined|date:"d.m.Y" }}</p>
+    </div>
+
+    <h3>Ваши комментарии ({{ comments.count }})</h3>
+    {% for comment in comments %}
+    <div class="user-comment">
+        <p><strong>К мероприятию:</strong>
+           <a href="{% url 'event_detail' comment.event.pk %}">
+               {{ comment.event.title }}
+           </a>
+        </p>
+        <p>{{ comment.text }}</p>
+        <small>{{ comment.created_at|date:"d.m.Y H:i" }}</small>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

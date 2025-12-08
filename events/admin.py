@@ -1,10 +1,11 @@
 from django.contrib import admin
-from .models import Event
+from .models import Event, Comment
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
-    list_display = ['title', 'event_type', 'date', 'location', 'price', 'is_past_event']
-    list_filter = ['event_type', 'date', 'created_at']
-    search_fields = ['title', 'description', 'location']
-    date_hierarchy = 'date'
-    ordering = ['-date']
+    list_display = ['title', 'event_type', 'date', 'location', 'price']
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ['author', 'event', 'created_at', 'active']
+    list_filter = ['active', 'created_at']

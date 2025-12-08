@@ -6,4 +6,6 @@ urlpatterns = [
     path('past/', views.past_events, name='past_events'),
     path('event/<int:pk>/', views.event_detail, name='event_detail'),
     path('add/', views.add_event, name='add_event'),
+    path('accounts/register/', views.register, name='register'),
+    path('accounts/profile/', views.profile, name='profile'),
 ]

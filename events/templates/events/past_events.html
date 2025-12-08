@@ -8,21 +8,27 @@
 </div>
 
 <!-- Форма поиска и фильтрации -->
-<div class="search-form">
-    <form method="get">
-        <div style="display: grid; grid-template-columns: 2fr 1fr auto; gap: 1rem; align-items: end;">
-            <div class="form-group">
-                <label for="{{ search_form.search.id_for_label }}">{{ search_form.search.label }}</label>
-                {{ search_form.search }}
-            </div>
-            <div class="form-group">
-                <label for="{{ search_form.event_type.id_for_label }}">{{ search_form.event_type.label }}</label>
-                {{ search_form.event_type }}
-            </div>
-            <button type="submit" class="btn">Найти</button>
+<form method="get" class="search-form">
+    <div class="form-grid">
+        <div class="form-group">
+            <input type="text" name="search" placeholder="Поиск мероприятий..."
+                   value="{{ request.GET.search }}" class="form-control">
         </div>
-    </form>
-</div>
+        <div class="form-group">
+            <select name="event_type" class="form-control">
+                <option value="">Все типы</option>
+                <option value="concert" {% if request.GET.event_type == 'concert' %}selected{% endif %}>Концерт</option>
+                <option value="exhibition" {% if request.GET.event_type == 'exhibition' %}selected{% endif %}>Выставка</option>
+                <option value="theater" {% if request.GET.event_type == 'theater' %}selected{% endif %}>Театр</option>
+                <option value="festival" {% if request.GET.event_type == 'festival' %}selected{% endif %}>Фестиваль</option>
+                <option value="sport" {% if request.GET.event_type == 'sport' %}selected{% endif %}>Спорт</option>
+                <option value="conference" {% if request.GET.event_type == 'conference' %}selected{% endif %}>Конференция</option>
+                <option value="other" {% if request.GET.event_type == 'other' %}selected{% endif %}>Другое</option>
+            </select>
+        </div>
+        <button type="submit" class="btn">Найти</button>
+    </div>
+</form>
 
 {% if events %}
     <div class="events-grid">

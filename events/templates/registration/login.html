@@ -1,0 +1,41 @@
+{% extends 'events/base.html' %}
+
+{% block title %}Вход - Афиша{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <h2 class="auth-title">Вход в аккаунт</h2>
+
+        {% if form.errors %}
+        <div class="alert alert-error">
+            Неправильное имя пользователя или пароль.
+        </div>
+        {% endif %}
+
+        <form method="post" class="auth-form">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="id_username">Имя пользователя</label>
+                <input type="text" name="username" id="id_username"
+                       class="form-control" required autofocus>
+            </div>
+
+            <div class="form-group">
+                <label for="id_password">Пароль</label>
+                <input type="password" name="password" id="id_password"
+                       class="form-control" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">Войти</button>
+
+            <input type="hidden" name="next" value="{{ next }}">
+        </form>
+
+        <div class="auth-links">
+            Нет аккаунта? <a href="{% url 'register' %}">Зарегистрируйтесь</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

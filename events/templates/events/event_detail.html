@@ -1,13 +1,9 @@
 {% extends 'events/base.html' %}
 
-{% block title %}{{ event.title }} - Афиша{% endblock %}
-
 {% block content %}
 <div class="event-detail">
     {% if is_past %}
-    <div class="past-event-badge">
-        ⏳ Это мероприятие уже прошло
-    </div>
+    <div class="past-event-badge">⏳ Это мероприятие уже прошло</div>
     {% endif %}
 
     {% if event.image %}
@@ -18,19 +14,63 @@
 
     <h1>{{ event.title }}</h1>
 
-    <div style="margin: 1.5rem 0; font-size: 1.1rem;">
+    <div class="event-detail-meta">
         <p><strong>📅 Дата и время:</strong> {{ event.date|date:"d.m.Y H:i" }}</p>
         <p><strong>📍 Место:</strong> {{ event.location }}</p>
         <p><strong>💰 Стоимость:</strong> {% if event.price > 0 %}{{ event.price }} руб.{% else %}Бесплатно{% endif %}</p>
+        <p><strong>💬 Комментарии:</strong> {{ event.get_comments_count }}</p>
     </div>
 
-    <div style="margin: 2rem 0;">
+    <div class="event-detail-description">
         <h3>Описание мероприятия</h3>
-        <p style="margin-top: 0.5rem; line-height: 1.8;">{{ event.description|linebreaks }}</p>
+        <p>{{ event.description|linebreaks }}</p>
     </div>
 
     <a href="{% if is_past %}{% url 'past_events' %}{% else %}{% url 'index' %}{% endif %}" class="btn">
         ← Назад к списку
     </a>
+</div>
+
+<div class="comments-section">
+    <h3>Комментарии ({{ comments.count }})</h3>
+
+    {% if user.is_authenticated %}
+    <div class="comment-form-container">
+        <form method="post" class="comment-form">
+            {% csrf_token %}
+            <input type="hidden" name="comment" value="1">
+            <div class="form-group">
+                <textarea name="text" rows="4" placeholder="Ваш комментарий..." class="form-control"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Добавить комментарий</button>
+        </form>
+    </div>
+    {% else %}
+    <div class="auth-required">
+        <p>Чтобы оставить комментарий, <a href="{% url 'login' %}">войдите</a> в аккаунт.</p>
+    </div>
+    {% endif %}
+
+    <div class="comments-list">
+        {% for comment in comments %}
+        <div class="comment-item">
+            <div class="comment-header">
+                <div class="comment-author">
+                    <strong>{{ comment.author.username }}</strong>
+                </div>
+                <div class="comment-date">
+                    {{ comment.created_at|date:"d.m.Y H:i" }}
+                </div>
+            </div>
+            <div class="comment-text">
+                {{ comment.text|linebreaks }}
+            </div>
+        </div>
+        {% empty %}
+        <div class="no-comments">
+            <p>Пока нет комментариев. Будьте первым!</p>
+        </div>
+        {% endfor %}
+    </div>
 </div>
 {% endblock %}
